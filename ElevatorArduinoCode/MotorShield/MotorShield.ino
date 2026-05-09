@@ -1,78 +1,69 @@
-// ======================================
-// SIMPLE SAFE MOTOR TEST CODE
-// Prevents motor from running on startup
-// Better stop behavior for Arduino Motor Shield
-// ======================================
+// simple safe motor test code
+// prevents motor from running on startup
+// improves safe stop behavior for arduino motor shield
 
-int directionPin = 12;
-int pwmPin = 3;
-int brakePin = 9;
+int directionPin = 12; // controls motor direction
+int pwmPin = 3;        // controls motor speed (pwm)
+int brakePin = 9;      // controls motor braking
 
-// Uncomment if using channel B
+// alternative pins for channel b (if needed)
 // int directionPin = 13;
 // int pwmPin = 11;
 // int brakePin = 8;
 
 void setup() {
 
-  // Define pins
+  // set motor control pins as outputs
   pinMode(directionPin, OUTPUT);
   pinMode(pwmPin, OUTPUT);
   pinMode(brakePin, OUTPUT);
 
-  // ==================================
-  // IMPORTANT STARTUP SAFETY
-  // ==================================
+  // safety startup behavior
 
-  // Disable PWM
+  // make sure motor is off at startup
   analogWrite(pwmPin, 0);
 
-  // Apply brake immediately
+  // immediately apply brake so motor cannot move
   digitalWrite(brakePin, HIGH);
 
-  // Set default direction
+  // set a default safe direction
   digitalWrite(directionPin, LOW);
 
-  // Wait for system stabilization
+  // wait for system to stabilize before running anything
   delay(1000);
 }
 
 void loop() {
 
-  // ==================================
-  // RUN MOTOR
-  // ==================================
+  // motor run test
 
-  // Set direction
+  // set motor direction forward
   digitalWrite(directionPin, HIGH);
 
-  // Release brake
+  // release brake so motor can move
   digitalWrite(brakePin, LOW);
 
-  // Start motor slowly
+  // start motor at medium speed
   analogWrite(pwmPin, 180);
 
-  // Run motor
+  // let motor run for 1 second
   delay(1000);
 
-  // ==================================
-  // STOP MOTOR PROPERLY
-  // ==================================
+  // motor stop test
 
-  // Stop PWM first
+  // stop motor power first (important for safety)
   analogWrite(pwmPin, 0);
 
-  // Apply brake
+  // apply brake to stop motor quickly
   digitalWrite(brakePin, HIGH);
 
-  // Small delay for full stop
+  // wait to ensure full stop
   delay(500);
 
-  // Optional:
-  // Set direction LOW to reduce leakage
+  // optional safety step:
+  // set direction low to reduce unwanted current flow
   digitalWrite(directionPin, LOW);
 
-  // Pause
+  // pause before repeating cycle
   delay(1000);
 }
-```

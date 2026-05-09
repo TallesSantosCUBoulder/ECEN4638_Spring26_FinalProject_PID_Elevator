@@ -1,9 +1,9 @@
 /*
- * HC-SR04 example sketch
- *
- * https://create.arduino.cc/projecthub/Isaac100/getting-started-with-the-hc-sr04-ultrasonic-sensor-036380
- *
- * by Isaac100
+ * HC-SR04 Ultrasonic Sensor Example
+ * 
+ * This program measures the distance to an object
+ * using the HC-SR04 ultrasonic sensor and prints
+ * the result to the Serial Monitor.
  */
 
 const int trigPin = 6;
