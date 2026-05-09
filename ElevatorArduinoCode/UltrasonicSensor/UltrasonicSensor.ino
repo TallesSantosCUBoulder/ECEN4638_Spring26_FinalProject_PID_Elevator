@@ -1,9 +1,9 @@
 /*
- * HC-SR04 Ultrasonic Sensor Example
- * 
- * This program measures the distance to an object
- * using the HC-SR04 ultrasonic sensor and prints
- * the result to the Serial Monitor.
+   HC-SR04 Ultrasonic Sensor Example
+ 
+   This program measures the distance to an object
+   using the HC-SR04 ultrasonic sensor and prints
+   the result to the Serial Monitor.
  */
 
 const int trigPin = 6;
