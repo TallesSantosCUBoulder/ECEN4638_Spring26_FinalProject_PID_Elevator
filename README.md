@@ -6,27 +6,27 @@ This project is a small elevator controlled by an Arduino microcontroller. It us
 
 <img width="250" alt="Elevator_Complete" src="https://github.com/user-attachments/assets/5b07ed7e-ed50-40ff-8884-2a18916ef578" />
 
-_Figure: Image of fully assembled elevator_
+_Figure 1: Image of fully assembled elevator_
 
 ## Background
 
-### Control System
+### Control Systems Explained
 
 A control system is a system designed to regulate the behavior of a device or process by comparing a desired input to an actual output and making corrections as needed. These systems can be open-loop or closed-loop, but both share the same fundamental components: the input, the controller, the actuator, the process, and the output. The input defines the desired goal, such as a target position. The controller processes the input and outputs a signal that tells the actuator how strongly to respond in order to reach the desired state. The actuator is the physical device that responds to that signal and acts on the system. The process is the physical system or component being controlled. The defining feature of a closed-loop system is the addition of a sensor that continuously measures the actual output and feeds it back to the controller, allowing the system to detect and correct any deviation from the desired value. This feedback mechanism is what makes closed-loop systems significantly more accurate and consistent than open-loop systems.
 
-The elevator operates as a closed-loop control system. The target floor position serves as the input. The Arduino acts as the controller, computing the error between the target position and the measured position of the carriage. Based on that error, it outputs a PWM signal to the motor shield, which drives the DC motor. The motor reels in or releases the cable to move the carriage vertically through the shaft. The HC-SR04 ultrasonic sensor mounted at the top of the shaft continuously measures the distance to the carriage and sends that value back to the Arduino. The Arduino compares this measured position to the target and updates its output accordingly. This feedback loop runs continuously until the carriage reaches the target floor.
+The elevator, shown in Figure 1, operates as a closed-loop control system. The target floor position serves as the input. The Arduino acts as the controller, computing the error between the target position and the measured position of the carriage. Based on that error, it outputs a PWM signal to the motor shield, which drives the DC motor. The motor reels in or releases the cable to move the carriage vertically through the shaft. The HC-SR04 ultrasonic sensor mounted at the top of the shaft continuously measures the distance to the carriage and sends that value back to the Arduino. The Arduino compares this measured position to the target and updates its output accordingly. This feedback loop, illustrated in Figure 2, runs continuously until the carriage reaches the target floor.
 
 <img width="500" alt="Control_System_Diagram" src="https://github.com/user-attachments/assets/fa9e17ff-3ea9-4271-a2a0-b52aa2f4c46f" />
 
-_Figure: Control system diagram_
+_Figure 2: Control system diagram_
 
 ### PID Controller
 
 <img width="250" alt="Output_Response" src="https://github.com/user-attachments/assets/a0a13529-34b5-46b6-80a5-45b8953967ae" />
 
-*Figure: The output response of a PID-controlled system.*
+*Figure 3: The output response of a PID-controlled system.*
 
-A PID controller is a widely used closed-loop controller that computes its output using three terms: proportional, integral, and derivative. Each term targets a different characteristic of the system response, as shown in Figure 2. The rise time (T<sub>r</sub>) describes how quickly the output reaches the desired level. Overshoot is how far past the target the output travels before settling. The peak time (T<sub>p</sub>) is how long it takes for that overshoot to decay to within approximately 1% of the target value. The steady-state error (e<sub>ss</sub>) is the remaining offset between the settled output and the desired value.
+A PID controller is a widely used closed-loop controller that computes its output using three terms: proportional, integral, and derivative. Each term targets a different characteristic of the system response, as shown in Figure 3. The rise time (T<sub>r</sub>) describes how quickly the output reaches the desired level. Overshoot is how far past the target the output travels before settling. The peak time (T<sub>p</sub>) is how long it takes for that overshoot to decay to within approximately 1% of the target value. The steady-state error (e<sub>ss</sub>) is the remaining offset between the settled output and the desired value.
 
 The proportional term creates an output directly proportional to the current error. A larger error produces a stronger response, which reduces rise time but tends to increase overshoot. The integral term accumulates error over time and applies an output based on its total magnitude and duration, which eliminates steady-state error but can contribute to additional overshoot. The derivative term responds to the rate of change of the error, applying a damping effect that reduces overshoot and helps stabilize the response, though it can amplify sensor noise if not carefully tuned. The combination of these three terms gives the controller the ability to react quickly, eliminate long-term error, and converge smoothly to the desired value. The complete PID control law is expressed in both the time domain and Laplace domain in Eq. 1 and Eq. 2. In this project, the Arduino executes the PID algorithm every loop cycle, using the distance error from the ultrasonic sensor to compute the appropriate PWM output and drive the motor, with the gains Kp, Ki, and Kd tuned to produce smooth and accurate carriage movement between floors.
 
@@ -34,66 +34,66 @@ The proportional term creates an output directly proportional to the current err
 
 ### 3D Printing
 
-Four parts were designed in Onshape, which is a free online CAD software, and 3D printed for this project. The first two parts are the DC motor housing top and bottom, which fit together to enclose and mount the DC motor securely to the frame. The third part is a spoke wheel, which attaches to the motor shaft and helps drive the elevator cable. The fourth part is a cable arch guide, which properly redirects the cable over the top of the elevator carriage so it moves within the elevator shaft without hitting the sides. All parts were printed in PLA with a 15% infill and oriented on the print bed so that the print lines run in the direction that gives each part the most strength.
+Four parts were designed in Onshape, which is a free online CAD software, and 3D printed for this project. The first two parts are the DC motor housing top and bottom, shown in Figure 4, which fit together to enclose and mount the DC motor securely to the frame. The third part is a spoke wheel, shown in Figure 5, which attaches to the motor shaft and helps drive the elevator cable. The fourth part is a cable arch guide, shown in Figure 6, which properly redirects the cable over the top of the elevator carriage so it moves within the elevator shaft without hitting the sides. All parts were printed in PLA with a 15% infill and oriented on the print bed so that the print lines run in the direction that gives each part the most strength.
 
 <img width="250" alt="DC_Motor_Housing" src="https://github.com/user-attachments/assets/81e5d044-89a3-47b2-ab60-d1d153f5c730" />
 
-_Figure: Image of CAD part 1 & 2_
+_Figure 4: Image of two-piece DC motor housing designed to enclose and securely mount the DC motor to the top of the elevator frame._
 
 <img width="250" alt="Spoke_Wheel" src="https://github.com/user-attachments/assets/d21c991b-a114-443d-9eb4-82cd043eea37" />
 
-_Figure: Image of CAD part 3_
+_Figure 5: Image of spoke wheel designed to attach to the DC motor shaft and reel the elevator cable in and out as the motor spins._
 
 <img width="250" alt="Cable_Arch_Guide" src="https://github.com/user-attachments/assets/ddc9678f-0ee9-40a4-a2a1-88ec74bd7f63" />
 
-_Figure: Image of CAD part 4_
+_Figure 6: Image of cable arch guide designed to redirect the elevator cable over the top of the shaft and keep the carriage centered._
 
 ### Circuit Design
 
-The Arduino connects to a motor shield that controls both the speed and direction of the DC motor. The motor shield is controlled using three Arduino pins: pin 12 sets the motor direction, pin 3 sends the PWM signal to control motor speed, and pin 9 controls the brake to stop the motor when the carriage reaches the desired floor. The HC-SR04 ultrasonic sensor is used to continuously measure the height of the carriage and is wired to GND, 5V, trigger on pin 6 and echo is on pin 7. The motor runs on its own separate power supply to prevent voltage drops from affecting the Arduino and causing unreliable behavior.
+The Arduino connects to a motor shield that controls both the speed and direction of the DC motor. The motor shield is controlled using three Arduino pins: pin 12 sets the motor direction, pin 3 sends the PWM signal to control motor speed, and pin 9 controls the brake to stop the motor when the carriage reaches the desired floor. The HC-SR04 ultrasonic sensor is used to continuously measure the height of the carriage and is wired to GND, 5V, trigger on pin 6 and echo is on pin 7. The motor runs on its own separate power supply to prevent voltage drops from affecting the Arduino and causing unreliable behavior. The full circuit schematic is shown in Figure 7.
 
 <img width="250" alt="Circuit_Schematic" src="https://github.com/user-attachments/assets/e72b4f9b-c4c1-4157-ac3e-3e9ecb43ef92" />
 
-_Figure: Circuit schematic_
+_Figure 7: Circuit schematic. Note: Arduino Motor Shield sits on top of Arduino to make pin connections._
 
 ## Hardware
 
 ### Materials List
 
-* Arduino Uno
-* DC motor
-* Motor shield
-* HC-SR04 ultrasonic sensor
-* 3D printed parts: DC motor housing top and bottom, spoke wheel, cable arch guide
-* Elevator shaft built by a previous class (three 2x4 wooden boards, plexiglass front panel, MDF top and base panel)
-* Elevator carriage built by a previous class (laser cut birch plywood box)
-* Cable or string
-* Power supply
-* Jumper wires
+- Arduino Uno
+- DC motor
+- Motor shield
+- HC-SR04 ultrasonic sensor
+- 3D printed parts: DC motor housing top and bottom, spoke wheel, cable arch guide
+- Elevator shaft built by a previous class (three 2x4 wooden boards, plexiglass front panel, MDF top and base panel)
+- Elevator carriage built by a previous class (laser cut birch plywood box)
+- Cable or string
+- Power supply
+- Jumper wires
 
 ### Elevator Assembly
 
 #### Construction Process
 
-The elevator shaft was built by a previous class using three 2x4s, a plexiglass front panel, and an MDF top and base panel. The elevator carriage is a small box made from laser cut birch plywood and was also built by the previous class. The Arduino and motor shield were mounted to the top panel, and the ultrasonic sensor was mounted at the top center inside the shaft, pointing downward to measure the position of the elevator carriage. The top panel has a slot cut into it so that the cable arch guide can sit over it. This arch was then hot glued in place to keep it secure. The cable runs from the spoke wheel on the motor shaft, through the cable arch guide, and down into the shaft where it connects to the carriage, keeping it centered so it moves cleanly without hitting the sides.
+The elevator shaft was built by a previous class using three 2x4s, a plexiglass front panel, and an MDF top and base panel. The elevator carriage is a small box made from laser cut birch plywood and was also built by the previous class. The Arduino and motor shield were mounted to the top panel, and the ultrasonic sensor was mounted at the top center inside the shaft, pointing downward to measure the position of the elevator carriage. The top panel has a slot cut into it so that the cable arch guide can sit over it. This arch was then hot glued in place to keep it secure. The cable runs from the spoke wheel on the motor shaft, through the cable arch guide, and down into the shaft where it connects to the carriage, keeping it centered so it moves cleanly without hitting the sides. The top and front views of the assembled elevator are shown in Figures 8 and 9.
 
 <img width="250" alt="Elevator_Top" src="https://github.com/user-attachments/assets/cc382a65-2275-4e8e-b4b1-b2e1eb833d1d" />
 
-_Figure: Image of top view of the elevator_
+_Figure 8: Image of top view of the elevator_
 
 <img width="250" alt="Elevator_Front" src="https://github.com/user-attachments/assets/23bdce91-727c-450b-9d0a-7c401717db36" />
 
-_Figure: Image of the front view of the elevator_
+_Figure 9: Image of the front view of the elevator_
 
 ## Software
 
 ### System Overview
 
-This project uses an Arduino script and a MATLAB script that work together to read the sensor, calculate the PID output, control the motor, and display the data. The Arduino code handles the real-time control while the MATLAB script runs on a laptop and displays the incoming data as a live graph. The Arduino keeps moving the elevator between the bottom floor (~38 cm) and the top floor (~11 cm), waiting one second at each stop. The MATLAB script allows the user to observe the system in real time, which makes it easier to spot any problems with the controller.
+This project uses an Arduino script and a MATLAB script that work together to read the sensor, calculate the PID output, control the motor, and display the data. The Arduino code handles the real-time control while the MATLAB script runs on a laptop and displays the incoming data as a live graph. The Arduino keeps moving the elevator between the bottom floor (~38 cm) and the top floor (~11 cm), waiting one second at each stop. The MATLAB script allows the user to observe the system in real time, which makes it easier to spot any problems with the controller. The overall system flowchart is shown in Figure 10.
 
 <img width="250" alt="System_Flowchart" src="https://github.com/user-attachments/assets/6dd110ef-5fa4-4fc0-a05e-64c02bae32c9" />
 
-_Figure: Image of system flowchart_
+_Figure 10: Image of system flowchart_
 
 ### System Setup & Execution
 
@@ -111,27 +111,35 @@ The Arduino sends three values to MATLAB over a serial connection at 115200 baud
 
 The elevator successfully moves between the two floors smoothly. The ultrasonic sensor provided consistent distance readings up to 50 cm, and the manually tuned PID controller responded well by reducing motor speed as the carriage approached each target.
 
-The MATLAB plots clearly showed the error converging toward zero on each trip and the PWM output dropping off as the carriage slowed down near the destination. Some tuning of the PID gains was needed early on to reduce overshoot and achieve a clean stop at each floor without bouncing. Once the gains were dialed in, the system ran reliably with no major issues.
+The MATLAB plots clearly showed the error converging toward zero on each trip and the PWM output dropping off as the carriage slowed down near the destination. Some tuning of the PID gains was needed early on to reduce overshoot and achieve a clean stop at each floor without bouncing. Once the gains were dialed in, the system ran reliably with no major issues. A recording of the elevator in motion is shown in Figure 11.
 
 <img width="250" alt="Elevator_Movement" src="https://github.com/user-attachments/assets/ebf5a3b3-430d-4854-8f4c-a6b430b6a455" />
 
-_Figure: GIF of PID controlled elevator_
+_Figure 11: GIF of PID controlled elevator_
+
+When Kp=1, Ki=1 and Kd=1, the elevator completes its cycles but is much slower, only managing about 2.5 full cycles in 300 steps. The most notable difference is the PWM gradually ramping up from around 90 to 220 over each descent, showing the integral term slowly building rather than saturating immediately. However, the gains are too low overall, leaving the integral term to do most of the work and causing the output to keep climbing even near the target, making clean stops difficult. The MATLAB response for this tuning is shown in Figure 12.
 
 <img width="500" alt="PID_1 0_1 0_1 0" src="https://github.com/user-attachments/assets/6bb9b1aa-fcfd-4412-aea5-69c5465c0ed9" />
 
-_Figure: Image of MATLAB PID data set 1_
+_Figure 12: Image of MATLAB PID response (Kp=1, Ki=1, Kd=1)_
+
+When Kp=1, Ki=5 and Kd=10 the elevator completes about 4 cycles in 400 steps but shows the most unstable behavior of all four tunings, as seen in Figure 13. The PWM graph rapidly oscillates between 70 and 255 on nearly every time step, a clear sign that Kd=10 is far too high and is overreacting to sensor noise from the ultrasonic sensor. The position graph reflects this with a visibly jagged, wobbly descent instead of a clean linear drop, and while the elevator still reaches both floors, the motor is being stressed unnecessarily throughout.
 
 <img width="500" alt="PID_1 0_5 0_10 0" src="https://github.com/user-attachments/assets/e0ba15ed-1fd3-43d2-b786-371adedf28f4" />
 
-_Figure: Image of MATLAB PID data set 2_
+_Figure 13: Image of MATLAB PID response (Kp=1, Ki=5, Kd=10)_
+
+When Kp=1, Ki=10 and Kd=5, the elevator completes about 3 full cycles in just 200 steps, making it one of the fastest responses of the four tested, as shown in Figure 14. The output oscillates in a choppy pattern between 150 and 255 rather than the extreme rapid spiking of the previous tuning, making it comparatively more stable. The position descent is relatively smooth but shows some wobble near the bottom of each cycle. Swapping Ki and Kd compared to the previous tuning produces noticeably less erratic behavior, though the low Kp still prevents a clean, immediate response.
 
 <img width="500" alt="PID_1 0_10 0_5 0" src="https://github.com/user-attachments/assets/8923a07e-9fc0-4c71-ae24-f1b98d4cd4c3" />
 
-_Figure: Image of MATLAB PID data set 3_
+_Figure 14: Image of MATLAB PID response (Kp=1, Ki=10, Kd=5)_
+
+When Kp=15, Ki=5 and Kd=7.5 the elevator completes about 3 full cycles in just 200 steps. In this case it successfully travels between both floors repeatedly but behaves more like an on/off controller than a true PID system, as shown in Figure 15. The motor runs at full power (PWM=255) for almost the entire journey, only briefly dipping in speed right before reaching the target floor. The high proportional gain combined with large distance errors simply overwhelms the output limits. The elevator stops at the correct floors each cycle, but there is no smooth deceleration; it runs full speed and cuts off abruptly.
 
 <img width="500" alt="PID_15 0_5 0_7 5" src="https://github.com/user-attachments/assets/632b3842-33ff-487e-8d79-88f8e6f36d65" />
 
-_Figure: Image of MATLAB PID data set 4_
+_Figure 15: Image of MATLAB PID response (Kp=15, Ki=5, Kd=7.5)_
 
 ## Conclusion
 
@@ -162,6 +170,3 @@ Available: https://github.com/TallesSantosCUBoulder/PingPongLevitator
 </td>
 </tr>
 </table>
-
-
-
